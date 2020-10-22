@@ -2,13 +2,19 @@ import React, { useState } from "react";
 
 // Use react-hooks => useState
 
-const useInput = (initialValue) => {
+const useInput = (initialValue, validator) => {
   const [value, setValue] = useState(initialValue);
   const onChange = (event) => {
     const {
       target: { value },
     } = event;
-    setValue(value);
+    let willUpdate = true;
+    if (typeof validator === "function") {
+      willUpdate = validator(value);
+    }
+    if (willUpdate) {
+      setValue(value);
+    }
     console.log(event.target);
   };
   return { value, onChange };
@@ -16,7 +22,8 @@ const useInput = (initialValue) => {
 
 const App = () => {
   const [item, setItem] = useState(1);
-  const name = useInput("Mr.");
+  const maxLen = (value) => value.length <= 10;
+  const name = useInput("Mr.", maxLen);
 
   const add = () => {
     setItem(item + 1);
