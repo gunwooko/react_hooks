@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Use react-hooks => useState
 const useInput = (initialValue, validator) => {
@@ -37,6 +37,16 @@ const App = () => {
   const maxLen = (value) => value.length <= 10;
   const name = useInput("Mr.", maxLen);
   const { currentItem, changeItem } = useTabs(0, content);
+
+  // useEffect => componentDidMount, componentWillUnMount, componentDidUpdate
+  const sayAllgood = () => {
+    console.log("All Good!");
+  };
+  useEffect(sayAllgood, [item]); // the second argument is dependency that will only activate if the values in the list
+  /* also you can use like this way
+  useEffect(sayAllgood, []); // doesn't work componentDidUpdate because the 2nd argument is empty list. 
+  useEffect(sayAllgood); 
+  */
 
   const add = () => {
     setItem(item + 1);
